@@ -31,25 +31,7 @@ public:
     void setValue (float newValue) override
     {
         value = newValue;
-        
-        class ParamUpdater : public CallbackMessage
-        {
-        public:
-            ParamUpdater (FloatParameter* aParam, ReverbProcessor& p, float aValue)
-                : parent (p), param (aParam), value (aValue) {}
-
-            void messageCallback() override
-            {
-                parent.parameterChange (param, value);
-            }
-
-        private:
-            ReverbProcessor& parent;
-            FloatParameter* param;
-            float value;
-        };
-
-        (new ParamUpdater (this, parent, newValue))->post();
+        parent.parameterChange (this, newValue);
     }
 
     float getDefaultValue() const override
@@ -256,8 +238,7 @@ void ReverbProcessor::setStateInformation (const void* data, int sizeInBytes)
 //==============================================================================
 void ReverbProcessor::parameterChange (AudioProcessorParameter* param, float newValue)
 {
-    if (ReverbEditor* editor = dynamic_cast<ReverbEditor*> (getActiveEditor()))
-        editor->parameterChange (param, newValue);
+    // do something with this
 }
 
 //==============================================================================
